@@ -144,6 +144,7 @@ paths:
     get:
       tags:
         - Courses
+        - Learners
       parameters:
         - name: id
           in: path
@@ -163,6 +164,7 @@ paths:
     get:
       tags:
         - Courses
+        - Categories
       parameters:
         - name: id
           in: path
