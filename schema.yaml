@@ -1,0 +1,274 @@
+openapi: 3.0.0
+info:
+  version: '1'
+  title: A basic LMS web API
+  description: 'This API was built designed for demonstration purposes only'
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/kchatzinikolakis/Basic_LMS/1
+
+security:
+  - oAuth2: []
+  - basic: []
+
+paths:
+
+  '/v1/learners/{id}':
+    get:
+      security: [
+          oAuth2: ['read:learner']
+        ]
+      tags:
+        - Learners
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/identifier'
+      responses:
+        '200':
+          $ref: '#/components/responses/learnerResponse'
+  '/v1/courses/{id}':
+    get:
+      tags:
+        - Courses
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/identifier'
+      responses:
+        '200':
+          $ref: '#/components/responses/courseResponse'
+    put:
+      tags: 
+      - Courses
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/identifier'
+      requestBody:
+        description: Create a course
+        content: 
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/courseWithoutID'
+      responses:
+        '200':
+          $ref: '#/components/responses/courseResponse'
+    delete:
+      tags: 
+        - Courses
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/identifier'
+      responses:
+        '200':
+          $ref: '#/components/responses/courseResponse'
+  '/v1/categories/{id}':
+    get:
+      tags:
+        - Categories
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/identifier'
+      responses:
+        '200':
+          $ref: '#/components/responses/courseCategoryResponse'
+  '/v1/courses':
+    get:
+      tags:
+        - Courses
+      responses:
+        '200':
+          description: 'Represents a list of courses'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/courseWithoutID'
+    post:
+      tags: 
+      - Courses
+      requestBody:
+        description: Create a course
+        content: 
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/course'
+      responses:
+        '200':
+          $ref: '#/components/responses/courseResponse'
+  '/v1/learners':
+    get:
+      security: [
+          oAuth2: ['read:learner']
+        ]
+      tags:
+        - Learners
+      responses:
+        '200':
+          description: 'Represents a list of learners'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/learner'
+  '/v1/categories':
+    get:
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: 'Represents a list of categories'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/courseCategory'
+  '/v1/learners/{id}/courses':
+    get:
+      tags:
+        - Courses
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/identifier'
+      responses:
+        '200':
+          description: 'Represents a list of courses'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/course'
+  '/v1/categories/{id}/courses':
+    get:
+      tags:
+        - Courses
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/identifier'
+      responses:
+        '200':
+          description: 'Represents a list of courses'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/course'
+components:
+  schemas:
+    identifier:
+      type: integer
+      format: int32
+      minimum: 1
+      example: 1
+    learner:
+      type: object
+      properties:
+        id: 
+          $ref: '#/components/schemas/identifier'
+        email:
+          type: string
+          example: someone@example.com
+    courseWithoutID:
+      type: object
+      properties:
+        categoryId:
+          $ref: '#/components/schemas/identifier'
+        name:
+          type: string
+          example: "How to be a programmer"
+        description:
+          type: string
+          example: "A very interesting course! Don't miss it!"
+        price:
+          type: number
+          format: float
+          minimum: 0
+          example: 5.0
+    course:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/identifier'
+        categoryId:
+          $ref: '#/components/schemas/identifier'
+        name:
+          type: string
+          example: "How to be a programmer"
+        description:
+          type: string
+          example: "A very interesting course! Don't miss it!"
+        price:
+          type: number
+          format: float
+          minimum: 0
+          example: 5.0
+    courseCategory:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/identifier'
+        parent_id:
+          $ref: '#/components/schemas/identifier'
+        name:
+          type: string
+          example: 'Programming 101'
+  responses:
+    learnerResponse:
+        description: A learner
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/learner'
+    courseResponse:
+        description: A course
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/course'
+    courseCategoryResponse:
+      description: A course category
+      content: 
+        application/json:
+          schema:
+            $ref: '#/components/schemas/courseCategory'
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+    oAuth2:
+      type: oauth2
+      description: See here for more details
+      flows:
+        'authorizationCode': {
+          'authorizationUrl': '/v1/auth/dialog',
+          'tokenUrl': '/v1/auth/token',
+          'scopes': {
+            'write:learners': 'modify learners',
+            'read:learners': 'retrieve learners'
+          }
+        }
