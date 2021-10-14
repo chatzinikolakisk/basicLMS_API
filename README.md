@@ -1,0 +1,1 @@
+This is a demo API schema definition for a given "basic" LMS.
