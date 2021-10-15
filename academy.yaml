@@ -1,0 +1,223 @@
+openapi: 3.0.0
+info:
+  version: academy
+  title: FubarLMS web API
+  description: 'This API was built designed for demonstration purposes only'
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/kchatzinikolakis/Basic_LMS/academy
+  - url: talentlms.com/rest-api
+paths: 
+
+  '/v1/learners/{id}':
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/identifier'
+      responses:
+        '200':
+          description: A learner
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/learner'
+        '404':
+          description: learner not found
+          
+  '/v1/categories/{id}':
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/identifier'
+      responses:
+        '200':
+          description: A category
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/category'
+        '404':
+          description: category not found
+
+  '/v1/courses/{id}':
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/identifier'
+      responses:
+        '200':
+          description: 'A course "1" '
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/course'
+        '404':
+          description: course not found
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/identifier'
+      responses:
+        '204':
+          description: 'The course has been deleted'
+        '404':
+          description: course not found
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            example: 1
+      requestBody:
+        description: Update a course
+        content: 
+          'application/json':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: course updated
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/course'
+                
+  '/v1/learners':
+    get:
+      responses:
+        '200':
+          description: "a collection of learners"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/learner'
+                  
+  '/v1/categories':
+    get:
+      responses:
+        '200':
+          description: "a collection of categories"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/category'
+                  
+  '/v1/courses':
+    get:
+      responses:
+        '200':
+          description: "a collection of courses"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/course'
+    post:
+      requestBody:
+        description: "Create a course"
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/course'
+      responses:
+        '201':
+          description: "course created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/course'
+                
+  '/v1/learners/{id}/courses':
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            example: 1
+      responses:
+        '200':
+          description: 'Represents a list of courses'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/course'
+  
+components:
+  schemas:
+    'learner':
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/identifier'
+        email:
+          type: string
+          format: email
+          example: 'someone@example.com'
+    'category':
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/identifier'
+        parent_id:
+          $ref: '#/components/schemas/identifier'
+        name:
+          type: string
+          example: 'Programming 101'
+    'course':
+      type: object
+      properties:
+        id: 
+          $ref: '#/components/schemas/identifier'
+        category_id:
+          $ref: '#/components/schemas/identifier'
+        name:
+          type: string
+          example: 'How to be a programer'
+        description:
+          type: string
+          example: "Some nice description"
+        price:
+          nullable: true
+          type: number
+          format: float
+          minimum: 0
+          example: 3.5
+    'identifier':
+      type: integer
+      format: int32
+      minimum: 1
+      example: 5
+      description: "This is the unique identifier for this resource"

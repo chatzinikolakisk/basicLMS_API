@@ -1,0 +1,46 @@
+curl -X 'GET' \
+  'url' \
+  -H 'accept: application/json'
+
+curl https://virtserver.swaggerhub.com/kchatzinikolakis/Basic_LMS/academy/v1/learners/1
+
+curl https://virtserver.swaggerhub.com/kchatzinikolakis/Basic_LMS/academy/v1/categories/1
+
+curl https://virtserver.swaggerhub.com/kchatzinikolakis/Basic_LMS/academy/v1/courses/1
+
+curl https://virtserver.swaggerhub.com/kchatzinikolakis/Basic_LMS/academy/v1/learners
+
+curl https://virtserver.swaggerhub.com/kchatzinikolakis/Basic_LMS/academy/v1/categories
+
+curl https://virtserver.swaggerhub.com/kchatzinikolakis/Basic_LMS/academy/v1/courses
+  
+
+curl -X 'PUT' \
+  'https://virtserver.swaggerhub.com/kchatzinikolakis/Basic_LMS/academy/v1/courses/1' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "string",
+  "description": "string"
+}'
+
+curl -X 'POST' \
+  'https://virtserver.swaggerhub.com/kchatzinikolakis/Basic_LMS/academy/v1/courses' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": 1,
+  "categoryId": 1,
+  "name": "How to be a programmer",
+  "description": "A very interesting course! Don'\''t miss it!",
+  "price": 5
+}'
+
+curl -X 'PUT' \
+  'https://virtserver.swaggerhub.com/kchatzinikolakis/Basic_LMS/academy/v1/courses/1' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "string",
+  "description": "string"
+}'
