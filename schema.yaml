@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: '1'
-  title: A basic LMS web API
+  title: FubarLMS web API
   description: 'This API was built designed for demonstration purposes only'
 servers:
   # Added by API Auto Mocking Plugin
